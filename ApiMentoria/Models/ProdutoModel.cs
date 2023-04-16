@@ -6,18 +6,19 @@ namespace ApiMentoria.Models
     {
         public ProdutoModel() { }
 
-        public ProdutoModel(string Name, float Valor, string Qualidade) 
+        public ProdutoModel(string Name, float Valor, string Quantidade) 
         {
+           
             Name = Name;
             Valor = Valor;
-            Qualidade = Qualidade;
+            Quantidade = Quantidade;
             Status = true;
         }
         public int Id { get; set; }
         public string Nome { get; set; }
         public float Valor { get; set; }
-        public string Qualidade { get; set; }
-        public bool Status { get; set; }
+        public string Quantidade { get; set; }
+        public bool STATUS_Produto { get; set; }
         
     }
     
