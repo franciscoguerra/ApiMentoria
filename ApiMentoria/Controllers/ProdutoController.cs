@@ -68,25 +68,19 @@ namespace ApiMentoria.Controllers
         [HttpGet("ProdutoMarca/{id}")]
         public async Task<IActionResult> GetProdutoMarca(int id)
         {
-            var paramentro = new {id };
             using (var sqlConnection = new SqlConnection(_connectionString))
             {  
-                const string sql = "SELECT Produto.Nome FROM Produto INNER JOIN Marca ON Produto.IdMarca = Marca.Id where Marca.Id = @id and Marca.Status_M =1";
+                var sql = @"SELECT Produto.Id, Produto.Nome, Produto.Valor, Produto.Quantidade, Produto.Status_P, Produto.IdMarca, Produto.IdCategoria
+                                    FROM Produto INNER JOIN Marca ON Produto.IdMarca = Marca.Id where Marca.Id = @id and Marca.Status_M =1";
                
-                var produto = await sqlConnection.QueryAsync<ProdutoModel>(sql, paramentro);
-
-
-                if (produto is null)
+                var produtos = await sqlConnection.QueryAsync<ProdutoModel>(sql, id);
+                
+                if (produtos is null)
                 {
                     return NotFound();
                 }
 
-                var nomes = produto.Select(p => p.Nome);
-           
-                return Ok(nomes);
-               
-
-
+                return Ok(produtos);
             }
         }
 
@@ -94,22 +88,20 @@ namespace ApiMentoria.Controllers
 
         public async Task<IActionResult> GetProdutoCategoria(int id)
         {
-            var paramentro = new { id };
             using (var sqlConnection = new SqlConnection(_connectionString))
             {
-                const string sql = "SELECT Produto.Nome FROM Produto INNER JOIN Categoria ON Produto.IdCategoria = Categoria.Id where Categoria.Id = @id and Categoria.Status_C =1";
+                var sql = @"SELECT Produto.Id, Produto.Nome, Produto.Valor, Produto.Quantidade, Produto.Status_P, Produto.IdMarca, Produto.IdCategoria 
+                                FROM Produto INNER JOIN Categoria ON Produto.IdCategoria = Categoria.Id where Categoria.Id = @id and Categoria.Status_C =1";
                
-                var produto = await sqlConnection.QueryAsync<ProdutoModel>(sql, paramentro);
+                var produtos = await sqlConnection.QueryAsync<ProdutoModel>(sql, id);
 
-                if (produto is null)
+                if (produtos is null)
                 {
                     return NotFound();
                 }
 
-                var nomes = produto.Select(p => p.Nome);
-
-                return Ok(nomes);
-
+                //var nomes = produtos.Select(p => p.Nome);
+                return Ok(produtos);
             }
 
         }
